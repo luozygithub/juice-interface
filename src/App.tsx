@@ -18,14 +18,16 @@ function App() {
     useState<boolean>()
 
   const { signerNetwork } = useContext(NetworkContext)
-
+  // eslint-disable-next-line no-console
+  console.log(signerNetwork)
   const isMobile = useMobile()
-
   const networkName = readNetwork.name
-
+  // eslint-disable-next-line no-console
+  console.log( readNetwork.name)
   const supportedNetworks: NetworkName[] = [
     NetworkName.mainnet,
     NetworkName.rinkeby,
+    NetworkName.kovan
   ]
 
   useLayoutEffect(() => {

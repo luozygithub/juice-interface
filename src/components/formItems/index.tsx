@@ -3,6 +3,7 @@ import TokenRefs from 'components/v1/shared/formItems/TokenRefs'
 import ProjectTicketMods from 'components/v1/shared/ProjectTicketMods'
 
 import ENSName from './ENSName'
+import EthAddress from './EthAddress'
 import { ItemNoInput } from './ItemNoInput'
 import ProjectDescription from './ProjectDescription'
 import ProjectDiscord from './ProjectDiscord'
@@ -20,6 +21,7 @@ import ProjectTwitter from './ProjectTwitter'
 
 export const FormItems = {
   ENSName,
+  EthAddress,
   ItemNoInput,
   ProjectRedemptionRate,
   ProjectDescription,

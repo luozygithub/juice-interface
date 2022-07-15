@@ -50,12 +50,17 @@ export default function useContractReader<V>({
 
   useDeepCompareEffectNoCheck(() => {
     async function getValue() {
+
       const readContract = contractToRead(contract, contracts)
 
+
+      // eslint-disable-next-line no-console
+      console.log(contract,contracts,readContract,'lzy')
+      // eslint-disable-next-line no-console
       if (!readContract || !functionName || args === null) return
 
       try {
-        console.info('📚 [V1] Read >', functionName)
+        console.info('📚 Read >', functionName)
 
         const result = await readContract[functionName](...(args ?? []))
 
@@ -63,7 +68,7 @@ export default function useContractReader<V>({
 
         if (_valueDidChange(value, newValue)) {
           console.info(
-            '📗 [V1] New >',
+            '📗 New >',
             functionName,
             { args },
             { newValue },
@@ -74,7 +79,7 @@ export default function useContractReader<V>({
         }
       } catch (err) {
         console.error(
-          '📕 [V1] Read error >',
+          '📕 Read error >',
           functionName,
           { args },
           { err },
@@ -119,7 +124,7 @@ export default function useContractReader<V>({
           })
         })
       } catch (error) {
-        console.info('[V1] Read contract >', {
+        console.info('Read contract >', {
           functionName,
           error,
         })

@@ -1,21 +1,19 @@
 import { t, Trans } from '@lingui/macro'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 
 import { TransactionReceipt } from '@ethersproject/providers'
 import { TransactorInstance } from 'hooks/Transactor'
 
-import { Form, Modal } from 'antd'
-import { useForm } from 'antd/lib/form/Form'
+import { Modal } from 'antd'
 import { JBDiscordLink } from 'pages/home/QAs'
 import EtherscanLink from 'components/EtherscanLink'
 import CopyTextButton from 'components/CopyTextButton'
 import TransactionModal from 'components/TransactionModal'
-import { DeployProjectPayerTxArgs } from 'hooks/v2/transactor/DeployProjectPayerTx'
 import { emitErrorNotification } from 'utils/notifications'
-import { NetworkContext } from 'contexts/networkContext'
+import { DeployProjectPayerTxArgs } from 'hooks/v2/transactor/DeployProjectPayerTx'
+import { useForm } from 'antd/lib/form/Form'
 
 import { readProvider } from 'constants/readProvider'
-
 import AdvancedOptionsCollapse from './AdvancedOptionsCollapse'
 
 const DEPLOY_EVENT_IDX = 0
@@ -44,8 +42,6 @@ export default function LaunchProjectPayerModal({
     | undefined
   onConfirmed?: VoidFunction
 }) {
-  const { userAddress } = useContext(NetworkContext)
-
   const [loadingProjectPayer, setLoadingProjectPayer] = useState<boolean>()
   const [transactionPending, setTransactionPending] = useState<boolean>()
   const [projectPayerAddress, setProjectPayerAddress] = useState<string>()
@@ -140,19 +136,13 @@ export default function LaunchProjectPayerModal({
             .
           </Trans>
         </p>
-        {/* TODO: we should consider reworking this */}
-        {/* Form that controls internals of the AdvancedOptionsCollapse */}
-        <Form
+        <AdvancedOptionsCollapse
           form={form}
-          initialValues={{ customBeneficiaryAddress: userAddress }}
-        >
-          <AdvancedOptionsCollapse
-            tokenMintingEnabled={tokenMintingEnabled}
-            setTokenMintingEnabled={setTokenMintingEnabled}
-            preferClaimed={preferClaimed}
-            setPreferClaimed={setPreferClaimed}
-          />
-        </Form>
+          tokenMintingEnabled={tokenMintingEnabled}
+          setTokenMintingEnabled={setTokenMintingEnabled}
+          preferClaimed={preferClaimed}
+          setPreferClaimed={setPreferClaimed}
+        />
       </TransactionModal>
       <Modal
         visible={confirmedModalVisible}

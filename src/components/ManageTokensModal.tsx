@@ -5,7 +5,6 @@ import RichButton from 'components/RichButton'
 import { PropsWithChildren, useState } from 'react'
 import { tokenSymbolText } from 'utils/tokenSymbolText'
 import * as constants from '@ethersproject/constants'
-import { reloadWindow } from 'utils/windowUtils'
 
 const BURN_DEFINITION_LINK =
   'https://www.investopedia.com/tech/cryptocurrency-burning-can-it-manage-inflation/'
@@ -174,17 +173,17 @@ export default function ManageTokensModal({
       <RedeemModal
         visible={redeemModalVisible}
         onCancel={() => setRedeemModalVisible(false)}
-        onConfirmed={reloadWindow}
+        onConfirmed={() => window.location.reload()}
       />
       <ClaimTokensModal
         visible={unstakeModalVisible}
         onCancel={() => setUnstakeModalVisible(false)}
-        onConfirmed={reloadWindow}
+        onConfirmed={() => window.location.reload()}
       />
       <MintModal
         visible={mintModalVisible}
         onCancel={() => setMintModalVisible(false)}
-        onConfirmed={reloadWindow}
+        onConfirmed={() => window.location.reload()}
       />
     </>
   )

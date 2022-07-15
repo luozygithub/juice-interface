@@ -2,8 +2,10 @@ import { t, Trans } from '@lingui/macro'
 import { Button, Tooltip } from 'antd'
 import { ThemeContext } from 'contexts/themeContext'
 import { V1ProjectContext } from 'contexts/v1/projectContext'
-import { useV1ConnectedWalletHasPermission } from 'hooks/v1/contractReader/V1ConnectedWalletHasPermission'
-import { V1OperatorPermission } from 'models/v1/permissions'
+import {
+  OperatorPermission,
+  useHasPermission,
+} from 'hooks/v1/contractReader/HasPermission'
 import { useContext, useState } from 'react'
 import { SettingOutlined, ToolOutlined } from '@ant-design/icons'
 
@@ -34,9 +36,9 @@ export default function V1ProjectHeaderActions() {
   const [editProjectModalVisible, setEditProjectModalVisible] =
     useState<boolean>(false)
 
-  const hasEditPermission = useV1ConnectedWalletHasPermission([
-    V1OperatorPermission.SetHandle,
-    V1OperatorPermission.SetUri,
+  const hasEditPermission = useHasPermission([
+    OperatorPermission.SetHandle,
+    OperatorPermission.SetUri,
   ])
 
   const unclaimedTokenBalance = useUnclaimedBalanceOfUser()

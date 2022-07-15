@@ -18,8 +18,6 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import { v2ProjectRoute } from 'utils/routes'
 
-import { reloadWindow } from 'utils/windowUtils'
-
 import { ETH_PAYOUT_SPLIT_GROUP } from 'constants/v2/splits'
 import V2ProjectReconfigureModal from './index'
 
@@ -66,7 +64,7 @@ export default function V2ReconfigureFundingModalTrigger({
 
   function handleOk() {
     setReconfigureModalVisible(false)
-    reloadWindow()
+    window.location.reload()
   }
 
   // Load queued FC data of project

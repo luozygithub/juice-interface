@@ -8,8 +8,10 @@ import Mod from 'components/v1/shared/Mod'
 import { V1ProjectContext } from 'contexts/v1/projectContext'
 import { BigNumber } from '@ethersproject/bignumber'
 import * as constants from '@ethersproject/constants'
-import { useV1ConnectedWalletHasPermission } from 'hooks/v1/contractReader/V1ConnectedWalletHasPermission'
-import { V1OperatorPermission } from 'models/v1/permissions'
+import {
+  OperatorPermission,
+  useHasPermission,
+} from 'hooks/v1/contractReader/HasPermission'
 import { useSetPayoutModsTx } from 'hooks/v1/transactor/SetPayoutModsTx'
 import { V1CurrencyOption } from 'models/v1/currencyOption'
 import { V1FundingCycle } from 'models/v1/fundingCycle'
@@ -95,9 +97,7 @@ export default function PayoutModsList({
 
   const baseTotal = total ?? amountSubFee(fundingCycle?.target, feePerbicent)
 
-  const hasEditPermission = useV1ConnectedWalletHasPermission(
-    V1OperatorPermission.SetPayoutMods,
-  )
+  const hasEditPermission = useHasPermission(OperatorPermission.SetPayoutMods)
 
   const totalPercentage = getTotalPercentage(editingMods)
 

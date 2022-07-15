@@ -2,7 +2,7 @@ import { Col, Row } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 
 import { V1ProjectContext } from 'contexts/v1/projectContext'
-import { CSSProperties, useContext, useState } from 'react'
+import { CSSProperties, useContext } from 'react'
 import { decodeFundingCycleMetadata } from 'utils/v1/fundingCycle'
 
 import ProjectHeader from 'components/Project/ProjectHeader'
@@ -40,11 +40,8 @@ export default function V1Project({
     tokenSymbol,
     tokenAddress,
     isPreviewMode,
-    owner,
     cv,
   } = useContext(V1ProjectContext)
-
-  const [payAmount, setPayAmount] = useState<string>('0')
 
   const fcMetadata = decodeFundingCycleMetadata(currentFC?.metadata)
   const reservedRate = fcMetadata?.reservedRate
@@ -59,7 +56,6 @@ export default function V1Project({
         metadata={metadata}
         handle={handle}
         isArchived={isArchived}
-        owner={owner}
         actions={<V1ProjectHeaderActions />}
       />
 
@@ -70,8 +66,6 @@ export default function V1Project({
 
         <Col xs={24} md={column ? 24 : 12} style={{ marginTop: gutter }}>
           <PayInputGroup
-            payAmountETH={payAmount}
-            onChange={setPayAmount}
             PayButton={V1PayButton}
             reservedRate={reservedRate}
             weight={currentFC?.weight}

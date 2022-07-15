@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@jbx-protocol/contracts-v1": "2.0.0",
+    "@jbx-protocol/contracts-v1": "^1.1.5",
     "@jbx-protocol/contracts-v2-4.0.0": "npm:@jbx-protocol/contracts-v2@4.0.0",
     "@jbx-protocol/contracts-v2-latest": "npm:@jbx-protocol/contracts-v2@8.0.0",
     "@jbx-protocol/juice-v1-token-terminal": "1.0.1",
@@ -61,7 +61,7 @@
   "scripts": {
     "compile-styles": "lessc ./node_modules/antd/dist/antd.less ./src/styles/antd.css --js",
     "prestart": "yarn compile-styles",
-    "start": "ESLINT_NO_DEV_ERRORS=true REACT_APP_VERSION=$(git rev-parse --short HEAD) react-scripts start",
+    "start": "react-scripts start",
     "build": "REACT_APP_VERSION=$(git rev-parse --short HEAD) react-scripts build",
     "prebuild": "yarn compile-styles && yarn i18n:compile",
     "test": "react-scripts test",
@@ -98,9 +98,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^11.1.0",
-    "@testing-library/react-hooks": "^8.0.1",
+    "@testing-library/react-hooks": "^8.0.0",
     "@testing-library/user-event": "^12.1.10",
-    "@types/uuid": "^8.3.4",
     "husky": "^7.0.0",
     "lint-staged": "13.0.0",
     "react-error-overlay": "6.0.9",

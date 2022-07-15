@@ -5,7 +5,7 @@ import RichButton from 'components/RichButton'
 import { useContext, useState } from 'react'
 
 import { ThemeContext } from 'contexts/themeContext'
-import NftDrawer from 'components/v2/shared/FundingCycleConfigurationDrawers/NftDrawer'
+import NFTDrawer from 'components/v2/shared/FundingCycleConfigurationDrawers/NFTDrawer'
 import { featureFlagEnabled } from 'utils/featureFlags'
 
 import FundingDrawer from '../../../../components/v2/shared/FundingCycleConfigurationDrawers/FundingDrawer'
@@ -28,12 +28,12 @@ export default function FundingCycleTabContent({
     useState<boolean>(false)
   const [tokenDrawerVisible, setTokenDrawerVisible] = useState<boolean>(false)
   const [rulesDrawerVisible, setRulesDrawerVisible] = useState<boolean>(false)
-  const [NftDrawerVisible, setNftDrawerVisible] = useState<boolean>(false)
+  const [NFTDrawerVisible, setNFTDrawerVisible] = useState<boolean>(false)
 
   const [fundingDrawerSeen, setFundingDrawerSeen] = useState<boolean>(false)
   const [tokenDrawerSeen, setTokenDrawerSeen] = useState<boolean>(false)
   const [rulesDrawerSeen, setRulesDrawerSeen] = useState<boolean>(false)
-  const [NftDrawerSeen, setNftDrawerSeen] = useState<boolean>(false)
+  const [NFTDrawerSeen, setNFTDrawerSeen] = useState<boolean>(false)
 
   const seenColor = colors.text.tertiary
 
@@ -41,10 +41,10 @@ export default function FundingCycleTabContent({
     setFundingDrawerVisible(false)
     setTokenDrawerVisible(false)
     setRulesDrawerVisible(false)
-    setNftDrawerVisible(false)
+    setNFTDrawerVisible(false)
   }
 
-  const isNftRewardsEnabled = featureFlagEnabled('nftRewards')
+  const isNFTRewardsEnabled = featureFlagEnabled('nftRewards')
 
   return (
     <ProjectConfigurationFieldsContainer showPreview>
@@ -87,26 +87,26 @@ export default function FundingCycleTabContent({
           }
           primaryColor={tokenDrawerSeen ? seenColor : undefined}
         />
-        {isNftRewardsEnabled ? (
+        {isNFTRewardsEnabled ? (
           <RichButton
             prefix="3"
             heading={<Trans>NFT rewards</Trans>}
             onClick={() => {
-              setNftDrawerVisible(true)
-              setNftDrawerSeen(true)
+              setNFTDrawerVisible(true)
+              setNFTDrawerSeen(true)
             }}
             description={<Trans>Reward contributors with NFT's.</Trans>}
             icon={
-              NftDrawerSeen ? (
+              NFTDrawerSeen ? (
                 <CheckCircleFilled style={{ color: seenColor }} />
               ) : undefined
             }
-            primaryColor={NftDrawerSeen ? colors.text.tertiary : undefined}
+            primaryColor={NFTDrawerSeen ? colors.text.tertiary : undefined}
           />
         ) : null}
 
         <RichButton
-          prefix={isNftRewardsEnabled ? '4' : '3'}
+          prefix={isNFTRewardsEnabled ? '4' : '3'}
           heading={<Trans>Rules</Trans>}
           onClick={() => {
             setRulesDrawerVisible(true)
@@ -142,7 +142,7 @@ export default function FundingCycleTabContent({
         onClose={closeDrawer}
         isCreate
       />
-      <NftDrawer visible={NftDrawerVisible} onClose={closeDrawer} />
+      <NFTDrawer visible={NFTDrawerVisible} onClose={closeDrawer} />
       <RulesDrawer visible={rulesDrawerVisible} onClose={closeDrawer} />
     </ProjectConfigurationFieldsContainer>
   )

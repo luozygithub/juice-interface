@@ -15,8 +15,7 @@ interface PreloadedState {
 
 export default function getLocalStoragePreloadedState(): RootState | undefined {
   try {
-    const stateString =
-      localStorage && localStorage.getItem(REDUX_STATE_LOCALSTORAGE_KEY)
+    const stateString = localStorage.getItem(REDUX_STATE_LOCALSTORAGE_KEY)
     if (!stateString) {
       return undefined
     }
@@ -52,11 +51,10 @@ export default function getLocalStoragePreloadedState(): RootState | undefined {
     }
 
     // update local storage with the (maybe) new state
-    localStorage &&
-      localStorage.setItem(
-        REDUX_STATE_LOCALSTORAGE_KEY,
-        JSON.stringify(parsedState),
-      )
+    localStorage.setItem(
+      REDUX_STATE_LOCALSTORAGE_KEY,
+      JSON.stringify(parsedState),
+    )
 
     return parsedState.reduxState
   } catch (e) {

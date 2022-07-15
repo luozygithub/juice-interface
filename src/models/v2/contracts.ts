@@ -12,16 +12,13 @@ export enum V2ContractName {
   JBTokenStore = 'JBTokenStore',
   JBSingleTokenPaymentTerminalStore = 'JBSingleTokenPaymentTerminalStore',
   JBETHERC20ProjectPayerDeployer = 'JBETHERC20ProjectPayerDeployer',
-
   JBProjectHandles = 'JBProjectHandles',
   PublicResolver = 'PublicResolver',
-
-  JBV1TokenPaymentTerminal = 'JBV1TokenPaymentTerminal',
-
   DeprecatedJBController = 'DeprecatedJBController',
   DeprecatedJBSplitsStore = 'DeprecatedJBSplitsStore',
   DeprecatedJBDirectory = 'DeprecatedJBDirectory',
-  // NftRewards = 'NftRewards', // TODO
 }
+// eslint-disable-next-line no-console
+console.log(Contract)
 
 export type V2Contracts = Record<V2ContractName, Contract>

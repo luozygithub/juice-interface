@@ -20,7 +20,6 @@ import CurrencySymbol from 'components/CurrencySymbol'
 import { amountFromPercent } from 'utils/v2/distributions'
 import { t, Trans } from '@lingui/macro'
 import TooltipIcon from 'components/TooltipIcon'
-import { round } from 'lodash'
 
 import DistributionSplitModal from './DistributionSplitModal'
 import { CurrencyName } from 'constants/currency'
@@ -205,12 +204,11 @@ export default function DistributionSplitCard({
                   {!distributionLimitIsInfinite && (
                     <span>
                       <CurrencySymbol currency={currencyName} />
-                      {round(
+                      {parseFloat(
                         amountFromPercent({
                           percent: preciseFormatSplitPercent(split.percent),
                           amount: distributionLimit,
-                        }),
-                        currencyName === 'USD' ? 4 : 2,
+                        }).toFixed(4),
                       )}
                     </span>
                   )}

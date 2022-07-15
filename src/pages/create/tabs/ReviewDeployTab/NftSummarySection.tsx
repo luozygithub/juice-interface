@@ -5,7 +5,7 @@ import { ThemeContext } from 'contexts/themeContext'
 import { useAppSelector } from 'hooks/AppSelector'
 import { useContext } from 'react'
 
-export default function NftSummarySection() {
+export default function NFTSummarySection() {
   const { nftRewardTiers } = useAppSelector(state => state.editingV2Project)
   const {
     theme: { colors },

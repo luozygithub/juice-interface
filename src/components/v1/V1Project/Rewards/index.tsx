@@ -9,8 +9,10 @@ import { ThemeContext } from 'contexts/themeContext'
 import * as constants from '@ethersproject/constants'
 import useERC20BalanceOf from 'hooks/v1/contractReader/ERC20BalanceOf'
 import { useIssueTokensTx } from 'hooks/v1/transactor/IssueTokensTx'
-import { useV1ConnectedWalletHasPermission } from 'hooks/v1/contractReader/V1ConnectedWalletHasPermission'
-import { V1OperatorPermission } from 'models/v1/permissions'
+import {
+  OperatorPermission,
+  useHasPermission,
+} from 'hooks/v1/contractReader/HasPermission'
 import useReservedTokensOfProject from 'hooks/v1/contractReader/ReservedTokensOfProject'
 import useTotalBalanceOf from 'hooks/v1/contractReader/TotalBalanceOf'
 import useTotalSupplyOfProjectToken from 'hooks/v1/contractReader/TotalSupplyOfProjectToken'
@@ -74,9 +76,7 @@ export default function Rewards() {
     ? tokenAddress !== constants.AddressZero
     : false
 
-  const hasIssueTicketsPermission = useV1ConnectedWalletHasPermission(
-    V1OperatorPermission.Issue,
-  )
+  const hasIssueTicketsPermission = useHasPermission(OperatorPermission.Issue)
 
   const labelStyle: CSSProperties = {
     width: 128,
@@ -89,8 +89,8 @@ export default function Rewards() {
   })
 
   const canPrintPreminedV1Tickets = Boolean(useCanPrintPreminedTokens())
-  const userHasMintPermission = useV1ConnectedWalletHasPermission(
-    V1OperatorPermission.PrintTickets,
+  const userHasMintPermission = useHasPermission(
+    OperatorPermission.PrintTickets,
   )
 
   const projectAllowsMint = Boolean(

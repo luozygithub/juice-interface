@@ -1,18 +1,16 @@
 import { t } from '@lingui/macro'
 import { Button } from 'antd'
 
-import { useState, useMemo, CSSProperties } from 'react'
+import { useState, useMemo } from 'react'
 
 import RichNote from './RichNote'
 
 export default function Paragraph({
   description,
   characterLimit,
-  style,
 }: {
   description: string
   characterLimit?: number
-  style?: CSSProperties
 }) {
   const CHARACTER_LIMIT_EXCEEDED =
     (characterLimit && description.length > characterLimit) ||
@@ -31,7 +29,7 @@ export default function Paragraph({
   return (
     <div>
       <RichNote
-        style={{ maxWidth: '700px', display: 'inline', ...style }} // good line length for reading
+        style={{ maxWidth: '700px', display: 'inline' }} // good line length for reading
         note={
           !expanded && CHARACTER_LIMIT_EXCEEDED ? shortDescription : description
         }

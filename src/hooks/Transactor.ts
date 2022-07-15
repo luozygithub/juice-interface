@@ -13,7 +13,6 @@ import { emitErrorNotification } from 'utils/notifications'
 
 import * as Sentry from '@sentry/browser'
 import { t } from '@lingui/macro'
-import { windowOpen } from 'utils/windowUtils'
 
 type TransactorCallback = (e?: TransactionEvent, signer?: JsonRpcSigner) => void
 
@@ -159,7 +158,7 @@ export function useTransactor({
         if (isNotifyNetwork) {
           const { emitter } = notify.hash(result.hash)
           emitter.on('all', transaction => ({
-            onclick: () => windowOpen(etherscanTxUrl + transaction.hash, false),
+            onclick: () => window.open(etherscanTxUrl + transaction.hash),
           }))
         } else {
           console.info('LOCAL TX SENT', result.hash)

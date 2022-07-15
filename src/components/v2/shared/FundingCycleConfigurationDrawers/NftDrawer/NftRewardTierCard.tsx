@@ -1,20 +1,20 @@
 import { Button, Col, Row, Tooltip } from 'antd'
 import Paragraph from 'components/Paragraph'
 import { ThemeContext } from 'contexts/themeContext'
-import { NftRewardTier } from 'models/v2/nftRewardTier'
+import { NFTRewardTier } from 'models/v2/nftRewardTier'
 import { useContext, useState } from 'react'
 import { LinkOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Trans } from '@lingui/macro'
 
-import NftRewardTierModal from './NftRewardTierModal'
+import NFTRewardTierModal from './NFTRewardTierModal'
 
-export default function NftRewardTierCard({
+export default function NFTRewardTierCard({
   rewardTier,
   onChange,
   onDelete,
 }: {
-  rewardTier: NftRewardTier
-  onChange: (rewardTier: NftRewardTier) => void
+  rewardTier: NFTRewardTier
+  onChange: (rewardTier: NFTRewardTier) => void
   onDelete: VoidFunction
 }) {
   const {
@@ -108,7 +108,7 @@ export default function NftRewardTierCard({
           </Tooltip>
         </Col>
       </Row>
-      <NftRewardTierModal
+      <NFTRewardTierModal
         visible={editTierModalVisible}
         rewardTier={rewardTier}
         mode="Edit"

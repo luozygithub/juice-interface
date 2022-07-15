@@ -3,8 +3,6 @@ import { Select } from 'antd'
 import { GlobalOutlined } from '@ant-design/icons'
 import { ThemeContext } from 'contexts/themeContext'
 
-import { reloadWindow } from 'utils/windowUtils'
-
 import { Languages } from 'constants/languages/language-options'
 
 // Language select tool seen in top nav
@@ -41,16 +39,13 @@ export default function NavLanguageSelector({
     )
   }
 
-  let currentSelectedLanguage =
-    (localStorage && localStorage.getItem('lang')) || 'en'
+  let currentSelectedLanguage = localStorage.getItem('lang') || 'en'
 
   // Sets the new language with localStorage and reloads the page
   const setLanguage = (newLanguage: string) => {
-    if (localStorage) {
-      currentSelectedLanguage = newLanguage
-      localStorage.setItem('lang', newLanguage)
-      reloadWindow()
-    }
+    currentSelectedLanguage = newLanguage
+    localStorage.setItem('lang', newLanguage)
+    window.location.reload()
   }
 
   const desktopDropdownStyle: CSSProperties = {

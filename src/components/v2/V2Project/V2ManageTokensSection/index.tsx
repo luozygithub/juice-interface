@@ -11,9 +11,10 @@ import FormattedAddress from 'components/FormattedAddress'
 import { formatPercent, formatWad } from 'utils/formatNumber'
 
 import IssueTokenButton from 'components/IssueTokenButton'
-import { V2OperatorPermission } from 'models/v2/permissions'
-import { useV2ConnectedWalletHasPermission } from 'hooks/v2/contractReader/V2ConnectedWalletHasPermission'
-
+import {
+  useHasPermission,
+  V2OperatorPermission,
+} from 'hooks/v2/contractReader/HasPermission'
 import { useIssueTokensTx } from 'hooks/v2/transactor/IssueTokensTx'
 import { tokenSymbolText } from 'utils/tokenSymbolText'
 import useTotalBalanceOf from 'hooks/v2/contractReader/TotalBalanceOf'
@@ -23,24 +24,14 @@ import ManageTokensModal from 'components/ManageTokensModal'
 
 import ParticipantsModal from 'components/modals/ParticipantsModal'
 
-import { reloadWindow } from 'utils/windowUtils'
-
 import V2RedeemModal from './V2RedeemModal'
 import V2ClaimTokensModal from './V2ClaimTokensModal'
 import V2MintModal from './V2MintModal'
 
-const labelStyle: CSSProperties = {
-  width: 128,
-}
-const manageTokensRowStyle: CSSProperties = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: 5,
-  justifyContent: 'space-between',
-  width: '100%',
-}
-
 export default function V2ManageTokensSection() {
+  const [manageTokensModalVisible, setManageTokensModalVisible] =
+    useState<boolean>(false)
+
   const {
     theme: { colors },
   } = useContext(ThemeContext)
@@ -55,26 +46,22 @@ export default function V2ManageTokensSection() {
     projectMetadata,
     cv,
   } = useContext(V2ProjectContext)
-  const { userAddress } = useContext(NetworkContext)
 
-  const [manageTokensModalVisible, setManageTokensModalVisible] =
-    useState<boolean>(false)
-  const [participantsModalVisible, setParticipantsModalVisible] =
-    useState<boolean>(false)
+  const { userAddress } = useContext(NetworkContext)
 
   const { data: claimedBalance } = useERC20BalanceOf(tokenAddress, userAddress)
   const { data: unclaimedBalance } = useUserUnclaimedTokenBalance()
-  const { data: totalBalance } = useTotalBalanceOf(userAddress, projectId)
 
-  // %age of tokens the user owns.
-  const userOwnershipPercentage =
-    formatPercent(totalBalance, totalTokenSupply) || '0'
-  const claimedBalanceFormatted = formatWad(claimedBalance ?? 0, {
-    precision: 0,
-  })
-  const unclaimedBalanceFormatted = formatWad(unclaimedBalance ?? 0, {
-    precision: 0,
-  })
+  const [participantsModalVisible, setParticipantsModalVisible] =
+    useState<boolean>(false)
+
+  const labelStyle: CSSProperties = {
+    width: 128,
+  }
+
+  const hasIssuedERC20 = tokenAddress !== constants.AddressZero
+
+  const hasIssueTicketsPermission = useHasPermission(V2OperatorPermission.ISSUE)
 
   const tokenText = tokenSymbolText({
     tokenSymbol: tokenSymbol,
@@ -82,17 +69,33 @@ export default function V2ManageTokensSection() {
     plural: true,
   })
 
-  const hasOverflow = Boolean(primaryTerminalCurrentOverflow?.gt(0))
+  const { data: totalBalance } = useTotalBalanceOf(userAddress, projectId)
 
-  const hasIssuedERC20 = tokenAddress !== constants.AddressZero
-  const hasIssueTicketsPermission = useV2ConnectedWalletHasPermission(
-    V2OperatorPermission.ISSUE,
-  )
+  // %age of tokens the user owns.
+  const userOwnershipPercentage =
+    formatPercent(totalBalance, totalTokenSupply) || '0'
+
   const showIssueTokensButton =
     !hasIssuedERC20 && hasIssueTicketsPermission && !isPreviewMode
 
+  const claimedBalanceFormatted = formatWad(claimedBalance ?? 0, {
+    precision: 0,
+  })
+  const unclaimedBalanceFormatted = formatWad(unclaimedBalance ?? 0, {
+    precision: 0,
+  })
+
+  const manageTokensRowStyle: CSSProperties = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 5,
+    justifyContent: 'space-between',
+    width: '100%',
+  }
+  const hasOverflow = Boolean(primaryTerminalCurrentOverflow?.gt(0))
+
   const userHasMintPermission = Boolean(
-    useV2ConnectedWalletHasPermission(V2OperatorPermission.MINT),
+    useHasPermission(V2OperatorPermission.MINT),
   )
   const projectAllowsMint = Boolean(fundingCycleMetadata?.allowMinting)
 
@@ -128,7 +131,7 @@ export default function V2ManageTokensSection() {
                 <div style={{ marginBottom: 20 }}>
                   <IssueTokenButton
                     useIssueTokensTx={useIssueTokensTx}
-                    onCompleted={reloadWindow}
+                    onCompleted={() => window.location.reload()}
                   />
                 </div>
               )}

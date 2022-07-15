@@ -17,7 +17,7 @@ export default function SpendingStats({
   currency,
   targetAmount,
   distributedAmount,
-  distributableAmount,
+  projectBalanceInCurrency,
   ownerAddress,
   feePercentage,
   hasFundingTarget,
@@ -25,7 +25,7 @@ export default function SpendingStats({
   currency: CurrencyName | undefined
   targetAmount: BigNumber
   distributedAmount: BigNumber
-  distributableAmount: BigNumber | undefined
+  projectBalanceInCurrency: BigNumber | undefined
   ownerAddress: string | undefined
   feePercentage: string | undefined
   hasFundingTarget: boolean | undefined
@@ -33,6 +33,12 @@ export default function SpendingStats({
   const {
     theme: { colors },
   } = useContext(ThemeContext)
+
+  const untapped = targetAmount.sub(distributedAmount)
+
+  const distributableAmount = projectBalanceInCurrency?.gt(untapped)
+    ? untapped
+    : projectBalanceInCurrency
 
   const smallHeaderStyle: CSSProperties = {
     fontSize: '.7rem',

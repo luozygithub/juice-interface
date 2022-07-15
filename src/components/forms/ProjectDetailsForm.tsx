@@ -5,7 +5,6 @@ import { FormItems } from 'components/formItems'
 import { normalizeHandle } from 'utils/formatHandle'
 import { CSSProperties } from 'react'
 import Callout from 'components/Callout'
-import { MinimalCollapse } from 'components/MinimalCollapse'
 
 export type ProjectDetailsFormFields = {
   name: string
@@ -79,31 +78,23 @@ export default function ProjectDetailsForm({
             }}
           />
         </div>
+
         <div>
-          <MinimalCollapse
-            header={
-              <h3 style={{ marginBottom: 0 }}>
-                <Trans>Project Links</Trans>
-              </h3>
-            }
-          >
-            <FormItems.ProjectLink name="infoUri" />
-            <FormItems.ProjectTwitter name="twitter" />
-            <FormItems.ProjectDiscord name="discord" />
-          </MinimalCollapse>
+          <h3>
+            <Trans>Links</Trans>
+          </h3>
+          <FormItems.ProjectLink name="infoUri" />
+          <FormItems.ProjectTwitter name="twitter" />
+          <FormItems.ProjectDiscord name="discord" />
         </div>
 
         <div>
-          <MinimalCollapse
-            header={
-              <h3 style={{ marginBottom: 0 }}>
-                <Trans>Project Page Customizations</Trans>
-              </h3>
-            }
-          >
-            <FormItems.ProjectPayButton name="payButton" />
-            <FormItems.ProjectPayDisclosure name="payDisclosure" />
-          </MinimalCollapse>
+          <h3>
+            <Trans>Project page customizations</Trans>
+          </h3>
+
+          <FormItems.ProjectPayButton name="payButton" />
+          <FormItems.ProjectPayDisclosure name="payDisclosure" />
         </div>
         <div>
           <Form.Item>

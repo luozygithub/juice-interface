@@ -17,7 +17,8 @@ export function useDistributeReservedTokens(): DistributeReserveTokensTx {
       txOpts?.onDone?.()
       return Promise.resolve(false)
     }
-
+    // eslint-disable-next-line no-console
+    console.log(contracts.JBController,222222222222)
     return transactor(
       contracts.JBController,
       'distributeReservedTokensOf',

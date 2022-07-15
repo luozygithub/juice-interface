@@ -10,9 +10,7 @@ import useWeiConverter from 'hooks/WeiConverter'
 import { V2CurrencyOption } from 'models/v2/currencyOption'
 import { PayButtonProps } from 'components/inputs/Pay/PayInputGroup'
 
-import { reloadWindow } from 'utils/windowUtils'
-
-import { V2ConfirmPayModal } from './V2ConfirmPayModal'
+import V2ConfirmPayModal from './V2ConfirmPayModal'
 
 export default function V2PayButton({
   payAmount,
@@ -88,7 +86,7 @@ export default function V2PayButton({
       />
       <V2ConfirmPayModal
         visible={payModalVisible}
-        onSuccess={reloadWindow}
+        onSuccess={() => window.location.reload()}
         onCancel={() => setPayModalVisible(false)}
         weiAmount={weiPayAmt}
       />

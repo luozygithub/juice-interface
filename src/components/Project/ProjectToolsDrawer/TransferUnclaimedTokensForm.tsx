@@ -1,5 +1,6 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans } from '@lingui/macro'
 import { Form } from 'antd'
+import { FormItems } from 'components/formItems'
 import InputAccessoryButton from 'components/InputAccessoryButton'
 import FormattedNumberInput from 'components/inputs/FormattedNumberInput'
 import TransactorButton from 'components/TransactorButton'
@@ -9,7 +10,6 @@ import { useContext, useState } from 'react'
 import { formatWad, fromWad, parseWad } from 'utils/formatNumber'
 import { tokenSymbolText } from 'utils/tokenSymbolText'
 import { NetworkContext } from 'contexts/networkContext'
-import { EthAddressInput } from 'components/inputs/EthAddressInput'
 
 export function TransferUnclaimedTokensForm({
   tokenSymbol,
@@ -86,9 +86,12 @@ export function TransferUnclaimedTokensForm({
           }
         />
       </Form.Item>
-      <Form.Item name="to" label={t`Recipient Address`}>
-        <EthAddressInput />
-      </Form.Item>
+      <FormItems.EthAddress
+        defaultValue={undefined}
+        name="to"
+        onAddressChange={to => transferTokensForm.setFieldsValue({ to })}
+        formItemProps={{ label: <Trans>Recipient address</Trans> }}
+      />
       <Form.Item>
         <TransactorButton
           onClick={() => transferTokens()}

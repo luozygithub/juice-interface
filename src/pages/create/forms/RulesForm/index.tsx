@@ -46,7 +46,6 @@ export default function RulesForm({
       ballotStrategy: getBallotStrategyByAddress(
         fundingCycleData.ballot ?? DEFAULT_BALLOT_STRATEGY.address,
       ),
-      allowSetTerminals: fundingCycleMetadata.global.allowSetTerminals,
     }),
     [fundingCycleData, fundingCycleMetadata],
   )
@@ -56,9 +55,6 @@ export default function RulesForm({
     initialValues.ballotStrategy,
   )
   const [pausePay, setPausePay] = useState<boolean>(initialValues.pausePay)
-  const [allowSetTerminals, setAllowSetTerminals] = useState<boolean>(
-    initialValues.allowSetTerminals,
-  )
   const [allowMinting, setAllowMinting] = useState<boolean>(
     initialValues.allowMinting,
   )
@@ -67,33 +63,16 @@ export default function RulesForm({
     const hasFormUpdated =
       initialValues.allowMinting !== allowMinting ||
       initialValues.pausePay !== pausePay ||
-      initialValues.allowSetTerminals !== allowSetTerminals ||
       !isEqual(initialValues.ballotStrategy, ballotStrategy)
-
     onFormUpdated?.(hasFormUpdated)
-  }, [
-    onFormUpdated,
-    initialValues,
-    pausePay,
-    allowMinting,
-    ballotStrategy,
-    allowSetTerminals,
-  ])
+  }, [onFormUpdated, initialValues, pausePay, allowMinting, ballotStrategy])
 
   const onFormSaved = useCallback(() => {
     dispatch(editingV2ProjectActions.setPausePay(pausePay))
     dispatch(editingV2ProjectActions.setAllowMinting(allowMinting))
-    dispatch(editingV2ProjectActions.setAllowSetTerminals(allowSetTerminals))
     dispatch(editingV2ProjectActions.setBallot(ballotStrategy.address))
     onFinish?.()
-  }, [
-    dispatch,
-    onFinish,
-    ballotStrategy,
-    pausePay,
-    allowMinting,
-    allowSetTerminals,
-  ])
+  }, [dispatch, onFinish, ballotStrategy, pausePay, allowMinting])
 
   const switchContainerStyle = {
     display: 'flex',
@@ -147,30 +126,6 @@ export default function RulesForm({
                 checked={allowMinting}
               />
               <Trans>Allow token minting</Trans>
-            </div>
-          </Form.Item>
-
-          <Form.Item
-            extra={
-              <Trans>
-                When enabled, the project owner can set the project's payment
-                terminals.
-              </Trans>
-            }
-          >
-            <div
-              style={{
-                ...switchContainerStyle,
-              }}
-            >
-              <Switch
-                onChange={checked => {
-                  setAllowSetTerminals(checked)
-                }}
-                style={{ marginRight: '0.5rem' }}
-                checked={allowSetTerminals}
-              />
-              <Trans>Allow terminal configuration</Trans>
             </div>
           </Form.Item>
         </div>

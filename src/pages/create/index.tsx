@@ -8,8 +8,6 @@ import { ThemeContext } from 'contexts/themeContext'
 import useMobile from 'hooks/Mobile'
 import { V2CurrencyProvider } from 'providers/v2/V2CurrencyProvider'
 
-import { scrollToTop } from 'utils/windowUtils'
-
 import ProjectDetailsTabContent from './tabs/ProjectDetailsTab/ProjectDetailsTabContent'
 import FundingCycleTabContent from './tabs/FundingCycleTab/FundingCycleTabContent'
 import { TabContentProps } from './models'
@@ -82,7 +80,7 @@ export default function V2Create() {
                     if (idx === TABS.length - 1) return
 
                     setActiveTab(`${idx + 1}`)
-                    scrollToTop()
+                    window.scrollTo(0, 0)
                   }}
                 />
               </TabPane>

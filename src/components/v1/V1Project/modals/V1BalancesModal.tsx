@@ -5,8 +5,10 @@ import ERC20TokenBalance from 'components/v1/shared/ERC20TokenBalance'
 import { FormItems } from 'components/formItems'
 import V1ProjectTokenBalance from 'components/v1/shared/V1ProjectTokenBalance'
 import { V1ProjectContext } from 'contexts/v1/projectContext'
-import { useV1ConnectedWalletHasPermission } from 'hooks/v1/contractReader/V1ConnectedWalletHasPermission'
-import { V1OperatorPermission } from 'models/v1/permissions'
+import {
+  OperatorPermission,
+  useHasPermission,
+} from 'hooks/v1/contractReader/HasPermission'
 import { useSetProjectUriTx } from 'hooks/v1/transactor/SetProjectUriTx'
 import { ProjectMetadataV4 } from 'models/project-metadata'
 import { TokenRef } from 'models/token-ref'
@@ -35,9 +37,7 @@ export function V1BalancesModal({
     setEditingTokenRefs(initialTokens)
   }, [metadata])
 
-  const hasEditPermission = useV1ConnectedWalletHasPermission([
-    V1OperatorPermission.SetUri,
-  ])
+  const hasEditPermission = useHasPermission([OperatorPermission.SetUri])
 
   async function updateTokenRefs() {
     if (!handle) return

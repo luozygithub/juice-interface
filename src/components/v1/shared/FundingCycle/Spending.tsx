@@ -26,15 +26,6 @@ export default function Spending({
 
   if (!currentFC) return null
 
-  const target = currentFC.target
-  const distributedAmount = currentFC.tapped
-
-  const distributable = target.sub(distributedAmount)
-
-  const distributableAmount = balanceInCurrency?.gt(distributable)
-    ? distributable
-    : balanceInCurrency
-
   return (
     <div>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
@@ -50,9 +41,9 @@ export default function Spending({
             currency={V1CurrencyName(
               currentFC.currency.toNumber() as V1CurrencyOption,
             )}
-            distributableAmount={distributableAmount}
-            targetAmount={target}
-            distributedAmount={distributedAmount}
+            projectBalanceInCurrency={balanceInCurrency}
+            targetAmount={currentFC.target}
+            distributedAmount={currentFC.tapped}
             feePercentage={perbicentToPercent(currentFC.fee)}
             ownerAddress={owner}
           />

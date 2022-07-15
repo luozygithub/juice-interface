@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Button, Skeleton, Space, Tooltip } from 'antd'
+import { Button, Skeleton, Space } from 'antd'
 import { CardSection } from 'components/CardSection'
 import TooltipLabel from 'components/TooltipLabel'
 import SpendingStats from 'components/Project/SpendingStats'
@@ -17,10 +17,10 @@ import { useETHPaymentTerminalFee } from 'hooks/v2/contractReader/ETHPaymentTerm
 import { Split } from 'models/v2/splits'
 import { BigNumber } from '@ethersproject/bignumber'
 import { detailedTimeString } from 'utils/formatTime'
-import { useV2ConnectedWalletHasPermission } from 'hooks/v2/contractReader/V2ConnectedWalletHasPermission'
-import { V2OperatorPermission } from 'models/v2/permissions'
-
-import { reloadWindow } from 'utils/windowUtils'
+import {
+  useHasPermission,
+  V2OperatorPermission,
+} from 'hooks/v2/contractReader/HasPermission'
 
 import DistributePayoutsModal from './modals/DistributePayoutsModal'
 import { EditPayoutsModal } from './modals/EditPayoutsModal'
@@ -62,35 +62,7 @@ export default function PayoutSplitsCard({
     fullWords: true,
   })
   const hasDuration = fundingCycleDuration?.gt(0)
-  const canEditPayouts = useV2ConnectedWalletHasPermission(
-    V2OperatorPermission.SET_SPLITS,
-  )
-
-  const effectiveDistributionLimit = distributionLimit ?? BigNumber.from(0)
-  const distributedAmount = usedDistributionLimit ?? BigNumber.from(0)
-
-  const distributable = effectiveDistributionLimit.sub(distributedAmount)
-
-  const distributableAmount = balanceInDistributionLimitCurrency?.gt(
-    distributable,
-  )
-    ? distributable
-    : balanceInDistributionLimitCurrency
-
-  const distributeButtonDisabled = isPreviewMode || distributableAmount?.eq(0)
-
-  function DistributeButton(): JSX.Element {
-    return (
-      <Button
-        type="ghost"
-        size="small"
-        onClick={() => setDistributePayoutsModalVisible(true)}
-        disabled={distributeButtonDisabled}
-      >
-        <Trans>Distribute funds</Trans>
-      </Button>
-    )
-  }
+  const canEditPayouts = useHasPermission(V2OperatorPermission.SET_SPLITS)
 
   return (
     <CardSection>
@@ -115,9 +87,9 @@ export default function PayoutSplitsCard({
                 currency={V2CurrencyName(
                   distributionLimitCurrency?.toNumber() as V2CurrencyOption,
                 )}
-                distributableAmount={distributableAmount}
+                projectBalanceInCurrency={balanceInDistributionLimitCurrency}
                 targetAmount={distributionLimit ?? BigNumber.from(0)}
-                distributedAmount={distributedAmount}
+                distributedAmount={usedDistributionLimit ?? BigNumber.from(0)}
                 feePercentage={
                   ETHPaymentTerminalFee
                     ? formatFee(ETHPaymentTerminalFee)
@@ -126,15 +98,15 @@ export default function PayoutSplitsCard({
                 ownerAddress={projectOwnerAddress}
               />
             </Skeleton>
-            {distributableAmount?.eq(0) ? (
-              <Tooltip title={<Trans>No funds available to distribute.</Trans>}>
-                <div>
-                  <DistributeButton />
-                </div>
-              </Tooltip>
-            ) : (
-              <DistributeButton />
-            )}
+
+            <Button
+              type="ghost"
+              size="small"
+              onClick={() => setDistributePayoutsModalVisible(true)}
+              disabled={isPreviewMode}
+            >
+              <Trans>Distribute funds</Trans>
+            </Button>
           </div>
         )}
 
@@ -190,7 +162,7 @@ export default function PayoutSplitsCard({
       <DistributePayoutsModal
         visible={distributePayoutsModalVisible}
         onCancel={() => setDistributePayoutsModalVisible(false)}
-        onConfirmed={reloadWindow}
+        onConfirmed={() => window.location.reload()}
       />
       <EditPayoutsModal
         visible={editPayoutModalVisible}

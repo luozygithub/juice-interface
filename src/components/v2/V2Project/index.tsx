@@ -9,8 +9,10 @@ import { lazy, useContext, useState } from 'react'
 
 import { ThemeContext } from 'contexts/themeContext'
 import useMobile from 'hooks/Mobile'
-import { useV2ConnectedWalletHasPermission } from 'hooks/v2/contractReader/V2ConnectedWalletHasPermission'
-import { V2OperatorPermission } from 'models/v2/permissions'
+import {
+  useHasPermission,
+  V2OperatorPermission,
+} from 'hooks/v2/contractReader/HasPermission'
 import useProjectQueuedFundingCycle from 'hooks/v2/contractReader/ProjectQueuedFundingCycle'
 import { useEditV2ProjectDetailsTx } from 'hooks/v2/transactor/EditV2ProjectDetailsTx'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -20,7 +22,6 @@ import { useIsUserAddress } from 'hooks/IsUserAddress'
 
 import { v2ProjectRoute } from 'utils/routes'
 import V2BugNotice from 'components/v2/shared/V2BugNotice'
-import { featureFlagEnabled } from 'utils/featureFlags'
 
 import { textSecondary } from 'constants/styles/text'
 import { V2_PROJECT_IDS } from 'constants/v2/projectIds'
@@ -38,7 +39,6 @@ const GUTTER_PX = 40
 
 const VolumeChart = lazy(() => import('components/VolumeChart'))
 import { V2ReconfigureProjectHandleDrawer } from './V2ReconfigureProjectHandleDrawer'
-import { NftRewardsSection } from './NftRewardsSection'
 
 const AllAssetsButton = ({ onClick }: { onClick: VoidFunction }) => {
   const { theme } = useContext(ThemeContext)
@@ -47,7 +47,6 @@ const AllAssetsButton = ({ onClick }: { onClick: VoidFunction }) => {
     <span
       style={{ ...secondaryTextStyle, cursor: 'pointer' }}
       onClick={onClick}
-      role="button"
     >
       <Trans>All assets</Trans> <RightCircleOutlined />
     </span>
@@ -75,12 +74,11 @@ export default function V2Project({
     projectOwnerAddress,
     handle,
   } = useContext(V2ProjectContext)
-  const canReconfigureFundingCycles = useV2ConnectedWalletHasPermission(
+  const canReconfigureFundingCycles = useHasPermission(
     V2OperatorPermission.RECONFIGURE,
   )
 
   const [handleModalVisible, setHandleModalVisible] = useState<boolean>()
-  const [payAmount, setPayAmount] = useState<string>('0')
 
   const { data: queuedFundingCycleResponse } = useProjectQueuedFundingCycle({
     projectId,
@@ -97,9 +95,7 @@ export default function V2Project({
   const history = useHistory()
   const isMobile = useMobile()
 
-  const hasEditPermission = useV2ConnectedWalletHasPermission(
-    V2OperatorPermission.RECONFIGURE,
-  )
+  const hasEditPermission = useHasPermission(V2OperatorPermission.RECONFIGURE)
 
   const isOwner = useIsUserAddress(projectOwnerAddress)
 
@@ -111,7 +107,6 @@ export default function V2Project({
   const colSizeMd = singleColumnLayout ? 24 : 12
   const hasCurrentFundingCycle = fundingCycle?.number.gt(0)
   const hasQueuedFundingCycle = queuedFundingCycle?.number.gt(0)
-  const showAddHandle = isOwner && !isPreviewMode && !handle
 
   if (projectId === undefined) return null
 
@@ -132,8 +127,6 @@ export default function V2Project({
     return !hasCurrentFundingCycle
   }
 
-  const nftRewardsEnabled = featureFlagEnabled('nftRewards')
-
   return (
     <Space direction="vertical" size={GUTTER_PX} style={{ width: '100%' }}>
       {!hasCurrentFundingCycle &&
@@ -147,25 +140,22 @@ export default function V2Project({
         actions={!isPreviewMode ? <V2ProjectHeaderActions /> : undefined}
         isArchived={isArchived}
         handle={handle}
-        owner={projectOwnerAddress}
         onClickSetHandle={
-          showAddHandle ? () => setHandleModalVisible(true) : undefined
+          isOwner ? () => setHandleModalVisible(true) : undefined
         }
       />
       {!isPreviewMode &&
         hasCurrentFundingCycle === false &&
         hasQueuedFundingCycle === false && <V2BugNotice />}
-      <Row gutter={GUTTER_PX} align={nftRewardsEnabled ? 'top' : 'bottom'}>
+      <Row gutter={GUTTER_PX} align="bottom">
         <Col md={colSizeMd} xs={24}>
           <TreasuryStats />
           <div style={{ textAlign: 'right' }}>
             <AllAssetsButton onClick={() => setBalancesModalVisible(true)} />
           </div>
         </Col>
-        <Col md={colSizeMd} xs={24}>
+        <Col md={colSizeMd} xs={24} style={{ marginTop: GUTTER_PX }}>
           <PayInputGroup
-            payAmountETH={payAmount}
-            onChange={setPayAmount}
             PayButton={V2PayButton}
             reservedRate={fundingCycleMetadata?.reservedRate.toNumber()}
             weight={fundingCycle?.weight}
@@ -174,12 +164,6 @@ export default function V2Project({
             tokenAddress={tokenAddress}
             disabled={isPreviewMode || payIsDisabledPreV2Redeploy()}
           />
-          {nftRewardsEnabled ? (
-            <NftRewardsSection
-              payAmountETH={payAmount}
-              onPayAmountChange={setPayAmount}
-            />
-          ) : null}
         </Col>
       </Row>
       <Row gutter={GUTTER_PX}>
@@ -225,7 +209,7 @@ export default function V2Project({
         onCancel={() => setBalancesModalVisible(false)}
         storeCidTx={editV2ProjectDetailsTx}
       />
-      {showAddHandle && (
+      {isOwner && !handle && (
         <V2ReconfigureProjectHandleDrawer
           visible={handleModalVisible}
           onFinish={() => setHandleModalVisible(false)}

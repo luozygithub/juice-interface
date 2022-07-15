@@ -15,7 +15,6 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { v2ProjectRoute } from 'utils/routes'
 
 import { drawerStyle } from 'constants/styles/drawerStyle'
-import { projectHandleENSTextRecordKey } from '../../../constants/projectHandleENSTextRecordKey'
 
 export function V2ReconfigureProjectHandleDrawer({
   visible,
@@ -27,7 +26,6 @@ export function V2ReconfigureProjectHandleDrawer({
   const { handle, projectId } = useContext(V2ProjectContext)
   const [ensNameForm] = useForm<{ ensName: string }>()
 
-  const [ensNameIsValid, setEnsNameIsValid] = useState<boolean>()
   const [ensNameInputDisabled, setEnsNameInputDisabled] = useState<boolean>()
   const [loadingSetENSName, setLoadingSetENSName] = useState<boolean>()
   const [loadingSetTextRecord, setLoadingSetTextRecord] = useState<boolean>()
@@ -50,9 +48,7 @@ export function V2ReconfigureProjectHandleDrawer({
   function onSetENSNameFormSaved() {
     setLoadingSetENSName(true)
 
-    const ensName = String(ensNameForm.getFieldValue('ensName'))
-      .toLowerCase()
-      .trim()
+    const ensName = ensNameForm.getFieldValue('ensName')
 
     editV2ProjectHandleTx(
       { ensName },
@@ -161,23 +157,8 @@ export function V2ReconfigureProjectHandleDrawer({
         </div>
       ) : (
         <Form form={ensNameForm} onFinish={onSetENSNameFormSaved}>
-          <FormItems.ENSName
-            name="ensName"
-            hideLabel
-            formItemProps={{ rules: [{ required: true }] }}
-            onChange={() => {
-              ensNameForm
-                .validateFields()
-                .then(() => setEnsNameIsValid(true))
-                .catch(() => setEnsNameIsValid(false))
-            }}
-          />
-          <Button
-            htmlType="submit"
-            loading={loadingSetENSName}
-            disabled={!ensNameIsValid}
-            type="primary"
-          >
+          <FormItems.ENSName name="ensName" hideLabel />
+          <Button htmlType="submit" loading={loadingSetENSName} type="primary">
             <Trans>Set ENS name</Trans>
           </Button>
         </Form>
@@ -193,7 +174,7 @@ export function V2ReconfigureProjectHandleDrawer({
         <Trans>
           Set a text record for{' '}
           {handle ? <strong>{handle}.eth</strong> : 'that ENS name'} with the
-          key <strong>"{projectHandleENSTextRecordKey}"</strong> and the value{' '}
+          key <strong>"juicebox"</strong> and the value{' '}
           <strong>"{projectId}"</strong> (this project's ID). You can do this on
           the{' '}
           <a

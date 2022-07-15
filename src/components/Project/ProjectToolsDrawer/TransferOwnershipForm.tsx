@@ -1,6 +1,6 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans } from '@lingui/macro'
 import { Button, Form } from 'antd'
-import { EthAddressInput } from 'components/inputs/EthAddressInput'
+import { FormItems } from 'components/formItems'
 import { TransactorInstance } from 'hooks/Transactor'
 import { useState } from 'react'
 
@@ -41,9 +41,13 @@ export function TransferOwnershipForm({
       <p>
         <Trans>Current owner: {ownerAddress}</Trans>
       </p>
-      <Form.Item name="to" label={t`Recipient address`}>
-        <EthAddressInput />
-      </Form.Item>
+
+      <FormItems.EthAddress
+        name="to"
+        defaultValue={undefined}
+        onAddressChange={to => transferOwnershipForm.setFieldsValue({ to })}
+        formItemProps={{ label: <Trans>Recipient address</Trans> }}
+      />
 
       <Form.Item>
         <Button

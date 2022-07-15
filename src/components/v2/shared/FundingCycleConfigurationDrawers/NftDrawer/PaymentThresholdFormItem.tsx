@@ -3,12 +3,12 @@ import { Form, FormInstance } from 'antd'
 import InputAccessoryButton from 'components/InputAccessoryButton'
 import FormattedNumberInput from 'components/inputs/FormattedNumberInput'
 
-import { NftFormFields } from './NftRewardTierModal'
+import { NFTFormFields } from './NFTRewardTierModal'
 
 export default function PaymentThresholdFormItem({
   form,
 }: {
-  form: FormInstance<NftFormFields>
+  form: FormInstance<NFTFormFields>
 }) {
   const validatePaymentThresholdAmount = () => {
     const value = form.getFieldValue('paymentThreshold')

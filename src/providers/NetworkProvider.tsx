@@ -8,8 +8,6 @@ import { initOnboard } from 'utils/onboard'
 import { API, Subscriptions, Wallet } from 'bnc-onboard/dist/src/interfaces'
 import { ThemeContext } from 'contexts/themeContext'
 
-import { reloadWindow } from 'utils/windowUtils'
-
 import { readNetwork } from 'constants/networks'
 import { NETWORKS } from 'constants/networks'
 
@@ -27,7 +25,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
   const resetWallet = useCallback(() => {
     onboard?.walletReset()
     setSigningProvider(undefined)
-    window && window.localStorage.setItem(KEY_SELECTED_WALLET, '')
+    window.localStorage.setItem(KEY_SELECTED_WALLET, '')
   }, [onboard])
 
   const selectWallet = async () => {
@@ -65,8 +63,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
       if (newWallet.provider) {
         // Reset the account when a new wallet is connected, as it will be resolved by the provider.
         setAccount(undefined)
-        window &&
-          window.localStorage.setItem(KEY_SELECTED_WALLET, newWallet.name || '')
+        window.localStorage.setItem(KEY_SELECTED_WALLET, newWallet.name || '')
         setSigningProvider(new Web3Provider(newWallet.provider))
       } else {
         resetWallet()
@@ -104,7 +101,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
   // Reconnect Wallet
   useEffect(() => {
     const previouslySelectedWallet =
-      window && window.localStorage.getItem(KEY_SELECTED_WALLET)
+      window.localStorage.getItem(KEY_SELECTED_WALLET)
     if (previouslySelectedWallet && onboard) {
       onboard.walletSelect(previouslySelectedWallet)
     }
@@ -114,7 +111,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!previousNetwork || !network) return
     if (previousNetwork === network) return
-    reloadWindow()
+    window.location.reload()
   }, [network, previousNetwork])
 
   return (

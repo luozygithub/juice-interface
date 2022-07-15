@@ -3,9 +3,10 @@ import { Button, Tooltip } from 'antd'
 import { ProjectToolsDrawer } from 'components/Project/ProjectToolsDrawer/ProjectToolsDrawer'
 import { ThemeContext } from 'contexts/themeContext'
 import { V2ProjectContext } from 'contexts/v2/projectContext'
-import { useV2ConnectedWalletHasPermission } from 'hooks/v2/contractReader/V2ConnectedWalletHasPermission'
-import { V2OperatorPermission } from 'models/v2/permissions'
-
+import {
+  useHasPermission,
+  V2OperatorPermission,
+} from 'hooks/v2/contractReader/HasPermission'
 import { useContext, useState } from 'react'
 import { ToolOutlined } from '@ant-design/icons'
 
@@ -30,9 +31,7 @@ export default function V2ProjectHeaderActions() {
 
   const [toolDrawerVisible, setToolDrawerVisible] = useState<boolean>(false)
 
-  const canReconfigure = useV2ConnectedWalletHasPermission(
-    V2OperatorPermission.RECONFIGURE,
-  )
+  const canReconfigure = useHasPermission(V2OperatorPermission.RECONFIGURE)
 
   const showReconfigureButton = canReconfigure
 

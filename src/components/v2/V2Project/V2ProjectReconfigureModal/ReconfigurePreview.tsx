@@ -1,7 +1,6 @@
 import { Col, Row } from 'antd'
 import {
   AllowMintingStatistic,
-  AllowSetTerminalsStatistic,
   DiscountRateStatistic,
   DistributionLimitStatistic,
   DistributionSplitsStatistic,
@@ -157,17 +156,12 @@ export default function ReconfigurePreview({
         ) : null}
       </Row>
       <Row gutter={gutter} style={{ marginBottom: rowMargin }}>
-        <Col md={8}>
+        <Col md={12} sm={12}>
           <PausePayStatistic pausePay={fundingCycleMetadata.pausePay} />
         </Col>
-        <Col md={8}>
+        <Col md={12} sm={12}>
           <AllowMintingStatistic
             allowMinting={fundingCycleMetadata.allowMinting}
-          />
-        </Col>
-        <Col md={8}>
-          <AllowSetTerminalsStatistic
-            allowSetTerminals={fundingCycleMetadata.global.allowSetTerminals}
           />
         </Col>
       </Row>

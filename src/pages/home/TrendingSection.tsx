@@ -1,4 +1,4 @@
-import { Row, Col, Tooltip, Space, Button } from 'antd'
+import { Row, Col, Tooltip, Space } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 
 import { CSSProperties, useContext } from 'react'
@@ -10,8 +10,6 @@ import { useTrendingProjects } from 'hooks/Projects'
 import TrendingProjectCard from 'pages/projects/TrendingProjectCard'
 import Grid from 'components/Grid'
 
-import useMobile from 'hooks/Mobile'
-
 import Payments from './Payments'
 
 export default function TrendingSection() {
@@ -19,8 +17,6 @@ export default function TrendingSection() {
     theme: { colors },
     isDarkMode,
   } = useContext(ThemeContext)
-
-  const isMobile = useMobile()
 
   const trendingProjectsStyle: CSSProperties = {
     // Light theme uses a slightly lighter background than background-l1
@@ -66,22 +62,11 @@ export default function TrendingSection() {
               ))}
             </Grid>
           </Space>
-
-          <Row
-            justify="center"
-            style={{
-              padding: '1rem 0 2rem 0',
-            }}
-          >
-            <Button size="large" href="/#/projects" block={isMobile}>
-              <Trans>More trending projects</Trans>
-            </Button>
-          </Row>
         </Col>
         <Col xs={24} md={12}>
           <Space direction="vertical" style={{ width: '100%' }} size="middle">
             <SmallHeader text={<Trans>Latest payments</Trans>} />
-            <div style={{ maxHeight: 784, overflow: 'auto' }}>
+            <div style={{ maxHeight: 600, overflow: 'auto' }}>
               <Payments />
             </div>
           </Space>

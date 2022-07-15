@@ -26,13 +26,8 @@ export default function ProjectPreview({
 }: {
   singleColumnLayout?: boolean
 }) {
-  const {
-    projectMetadata,
-    payoutGroupedSplits,
-    reservedTokensGroupedSplits,
-    nftRewardsCid,
-    nftRewardTiers,
-  } = useAppSelector(state => state.editingV2Project)
+  const { projectMetadata, payoutGroupedSplits, reservedTokensGroupedSplits } =
+    useAppSelector(state => state.editingV2Project)
   const fundingCycleMetadata = useEditingV2FundingCycleMetadataSelector()
   const fundingCycleData = useEditingV2FundingCycleDataSelector()
   const fundAccessConstraints = useEditingV2FundAccessConstraintsSelector()
@@ -87,11 +82,6 @@ export default function ProjectPreview({
     ballotState: undefined,
     primaryTerminalCurrentOverflow: undefined,
     totalTokenSupply: undefined,
-
-    nftRewards: {
-      cid: nftRewardsCid,
-      rewardTiers: nftRewardTiers,
-    },
 
     loading: {
       ETHBalanceLoading: false,

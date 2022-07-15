@@ -4,7 +4,7 @@ import { DatePicker, Form, InputNumber, Modal, Radio } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import CurrencySwitch from 'components/CurrencySwitch'
 import CurrencySymbol from 'components/CurrencySymbol'
-import { EthAddressInput } from 'components/inputs/EthAddressInput'
+import { FormItems } from 'components/formItems'
 import {
   ModalMode,
   validateEthAddress,
@@ -358,19 +358,22 @@ export default function DistributionSplitModal({
         </Form.Item>
 
         {editingSplitType === 'address' ? (
-          <Form.Item
+          <FormItems.EthAddress
             name="beneficiary"
-            label={t`Address`}
-            rules={[
-              {
-                validator: validatePayoutAddress,
-                validateTrigger: 'onCreate',
-                required: true,
-              },
-            ]}
-          >
-            <EthAddressInput />
-          </Form.Item>
+            defaultValue={form.getFieldValue('beneficiary')}
+            formItemProps={{
+              label: t`Address`,
+              rules: [
+                {
+                  validator: validatePayoutAddress,
+                },
+              ],
+              required: true,
+            }}
+            onAddressChange={beneficiary =>
+              form.setFieldsValue({ beneficiary })
+            }
+          />
         ) : (
           <Form.Item
             name={'projectId'}
@@ -389,20 +392,18 @@ export default function DistributionSplitModal({
           </Form.Item>
         )}
         {editingSplitType === 'project' ? (
-          <Form.Item
+          <FormItems.EthAddress
             name="beneficiary"
-            label={t`Token beneficiary address`}
-            extra={t`The address that should receive the tokens minted from paying this project.`}
-            rules={[
-              {
-                validator: validatePayoutAddress,
-                validateTrigger: 'onCreate',
-                required: true,
-              },
-            ]}
-          >
-            <EthAddressInput />
-          </Form.Item>
+            defaultValue={form.getFieldValue('beneficiary')}
+            formItemProps={{
+              label: t`Token beneficiary address`,
+              required: true,
+              extra: t`The address that should receive the tokens minted from paying this project.`,
+            }}
+            onAddressChange={beneficiary => {
+              form.setFieldsValue({ beneficiary })
+            }}
+          />
         ) : null}
 
         {/* Only show amount input if project distribution limit is not infinite */}
