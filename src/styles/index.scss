@@ -1,0 +1,133 @@
+@import './utilities';
+
+body {
+  margin: 0;
+  background: #131115;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  font-family: 'DM Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-primary);
+  background: var(--background-l0);
+  overscroll-behavior-y: none;
+}
+
+div#root {
+  height: 100%;
+}
+
+code {
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; */
+  font-family: 'DM Mono', monospace;
+}
+
+div,
+p,
+button,
+a {
+  font-family: 'DM Mono', monospace;
+}
+
+label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--text-action-primary);
+  font-weight: 500;
+
+  &:hover {
+    color: var(--text-action-highlight);
+  }
+}
+
+a.quiet {
+  color: inherit;
+  font-weight: 500;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+a.hover-action {
+  color: var(--text-primary);
+  &:hover {
+    color: var(--text-action-primary);
+    text-decoration: underline;
+  }
+}
+
+input {
+  background: var(--background-l0);
+  color: var(--text-primary);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-header);
+}
+
+.clickable-border {
+  border: 1px solid var(--stroke-tertiary);
+  transition: border-color 120ms ease-out;
+
+  &:hover {
+    border: 1px solid var(--stroke-secondary);
+  }
+}
+
+.hover-opacity {
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 1000px) {
+  .hide-tablet {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 0px) and (max-width: 600px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+
+.twitter-tweet {
+  display: inline-flex !important;
+}
+
+.dcg-container {
+  background: none !important;
+  background-color: none !important;
+}
+
+::selection {
+  color: var(--text-primary);
+  background: var(--background-action-secondary);
+}
+
+html,
+p,
+span,
+li,
+button {
+  transition: background-color 100ms ease-in, background 100ms ease-in;
+}
+
+body, .top-nav, div {
+  transition: background-color 250ms linear;
+}
+
+@import 'antd-overrides/index.scss';
+@import 'blocknative-overrides.scss';
